@@ -1,6 +1,7 @@
 # Práctica: Protocolo de Reservas con Control de Concurrencia (Caso de Uso 5)
 
-**Autores:** * Manuel Romero Jiménez
+**Autores:** 
+* Manuel Romero Jiménez
 * Francisco Javier Jiménez Villatoro
 
 ---
