@@ -18,32 +18,23 @@ Para gestionar la concurrencia exigida por el caso de uso, el servidor implement
 La comunicación entre cliente y servidor se rige estrictamente por la siguiente gramática ABNF:
 
 ```abnf
-; --- MENSAJES DEL CLIENTE (REQUESTS) ---
+; --- MENSAJES DEL CLIENTE (REQUESTS: 10 Bytes) ---
+request = comando timestamp asiento id-reserva
 
-request = (cmd-list / cmd-book / cmd-cancel) LF
+comando    = %x01 / %x02 / %x03 / %x04        ; 1=LIST, 2=BOOK, 3=CONFIRM, 4=CANCEL
+timestamp  = 4OCTET                           ; 4 bytes (uint32) Unix Epoch
+asiento    = %x00 / %x01 / %x02 / %x03 / %x04 ; 1 byte (0 si no aplica, o 1-4)
+id-reserva = 4OCTET                           ; 4 bytes (uint32) ID temporal
 
-cmd-list   = "LIST"
-cmd-book   = "BOOK" DELIMITER recurso
-cmd-cancel = "CANCEL" DELIMITER id-reserva
+; --- MENSAJES DEL SERVIDOR (RESPONSES: 9 Bytes) ---
+response = estado dato1 dato2
 
-recurso    = 1*VCHAR              ; Cualquier cadena de caracteres visibles (ej. ASIENTO_1)
-id-reserva = 8HEXDIG              ; 8 caracteres hexadecimales (generados por UUID)
-DELIMITER  = "|"                  ; Carácter separador
-LF         = %x0A                 ; Salto de línea (\n)
+estado = %x00 / %x01 / %x02                   ; 1 byte: 0=OK, 1=ERR, 2=NONE
+dato1  = 4OCTET                               ; 4 bytes (uint32) Payload 1
+dato2  = 4OCTET                               ; 4 bytes (uint32) Payload 2
 
-
-; --- MENSAJES DEL SERVIDOR (RESPONSES) ---
-
-response = (resp-ok / resp-err) LF
-
-resp-ok  = "OK|" (res-list / res-book / res-cancel)
-resp-err = "ERR|" razon-error
-
-res-list   = "DISPONIBLES:" [recurso *("," recurso)]
-res-book   = "RESERVADO|" id-reserva
-res-cancel = "CANCELADO"
-
-razon-error = 1*VCHAR             ; Texto descriptivo del error (ej. "Recurso no disponible") 
+; --- DEFINICIONES AUXILIARES ---
+OCTET = %x00-FF                               ; 1 Byte de datos puros (8 bits)
 ```
 
 ## 4. Requisitos e Instrucciones de Ejecución
