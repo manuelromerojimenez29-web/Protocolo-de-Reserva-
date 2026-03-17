@@ -1,9 +1,12 @@
 
-- Consulta disponibilidad, mensaje de aviso en caso de estar lleno. Lógica de prereserva.
-- diferenciar por fecha
--control de errores
+- Consulta disponibilidad, mensaje de aviso en caso de estar lleno. Lógica de prereserva. ----------
+- diferenciar por fecha ---------
+-control de errores -----------
 -wireshark
-- codificacion de mensajes por bits. Trnasformr mensaje en secuencia de bits (en cliente.py) antes de enviar al servidor
--cancelación y liberación
--identificador reserva
+- codificacion de mensajes por bits. Trnasformr mensaje en secuencia de bits (en cliente.py) antes de enviar al servidor ----------
+-cancelación y liberación -------------
+-identificador reserva ---------
 -ABNF
+-Establecer franja entre horas, solo horario cada media hora 
+- diagrama de estados
+-problema al meter hora 00:00--------
