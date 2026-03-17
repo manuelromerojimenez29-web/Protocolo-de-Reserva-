@@ -3,6 +3,7 @@
 **Autores:** 
 * Manuel Romero Jiménez
 * Francisco Javier Jiménez Villatoro
+* Vittorio Maci
 
 ---
 
