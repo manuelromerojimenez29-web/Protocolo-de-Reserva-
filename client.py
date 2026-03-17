@@ -1,3 +1,4 @@
+# cliente
 import socket
 import sys
 import struct
