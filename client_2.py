@@ -52,23 +52,33 @@ def pedir_fecha_hora():
             print("\n[ERROR] Formato incorrecto. Usa AAAA-MM-DD HH:MM")
 
 def enviar_comando(sock, cmd, ts, asiento=0, id_res=0):
+    # Empaquetamos y enviamos los 10 bytes
     paquete = struct.pack('! B I B I', cmd, ts, asiento, id_res)
     sock.sendall(paquete)
     
-    respuesta = sock.recv(9)
-    if len(respuesta) == 9:
-        return struct.unpack('! B I I', respuesta)
-    return None
+    # Búfer para asegurar que leemos exactamente 9 bytes
+    respuesta = b''
+    while len(respuesta) < 9:
+        chunk = sock.recv(9 - len(respuesta))
+        if not chunk:
+            # Si se corta la conexión, devolvemos un código de error interno para no crashear
+            return (STATUS_ERR, 99, 0) 
+        respuesta += chunk
+        
+    return struct.unpack('! B I I', respuesta)
 
 def iniciar_cliente():
-    # 1. Buscamos el servidor dinámicamente
-    HOST = buscar_servidor_automaticamente()
+    # HOST = buscar_servidor_automaticamente() # (Lo dejamos comentado por ahora)
+    HOST = '192.168.14.164' # <-- ¡Asegúrate de poner tu IP aquí!
     
     if not HOST:
         print("Cerrando programa...")
-        sys.exit() # Si no hay servidor, salimos limpiamente
+        sys.exit()
 
-    # 2. Nos conectamos al servidor encontrado
+    # 1. PRIMERO PEDIMOS LOS DATOS (Para no hacer esperar a la red)
+    ts_actual = pedir_fecha_hora()
+
+    # 2. LUEGO NOS CONECTAMOS AL SERVIDOR
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((HOST, PORT))
@@ -77,9 +87,8 @@ def iniciar_cliente():
         print("Error: Servidor no disponible.")
         sys.exit()
 
+    # 3. ENTRAMOS AL MENÚ DIRECTAMENTE
     try:
-        ts_actual = pedir_fecha_hora()
-
         while True:
             mostrar_submenu = False 
 
@@ -134,6 +143,7 @@ def iniciar_cliente():
                     print("\n[ERROR] Debes introducir un número de ID válido.")
 
             elif opcion == '5':
+                # Si cambia la fecha, no pasa nada porque ya estamos chateando activamente con el servidor
                 ts_actual = pedir_fecha_hora()
             
             elif opcion == '6':
