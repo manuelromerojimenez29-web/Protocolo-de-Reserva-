@@ -140,9 +140,18 @@ def manejar_cliente(conn, addr):
     try:
         with conn:
             while True:
-                data = conn.recv(10)
-                if not data or len(data) < 10:
+                # Búfer para asegurar que leemos exactamente 10 bytes
+                data = b''
+                while len(data) < 10:
+                    chunk = conn.recv(10 - len(data))
+                    if not chunk:
+                        break # El cliente se desconectó limpiamente
+                    data += chunk
+                
+                # Si salió del bucle y la trama está incompleta, cerramos
+                if len(data) < 10:
                     break
+                    
                 respuesta_binaria = procesar_mensaje(data, addr)
                 conn.sendall(respuesta_binaria)
     except Exception as e:
