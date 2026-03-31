@@ -68,7 +68,7 @@ def enviar_comando(sock, cmd, ts, asiento=0, id_res=0):
     return struct.unpack('! B I I', respuesta)
 
 def iniciar_cliente():
-    # HOST = buscar_servidor_automaticamente() # (Lo dejamos comentado por ahora)
+    # HOST = buscar_servidor_automaticamente() # 
     HOST = '192.168.14.164' # <-- ¡Asegúrate de poner tu IP aquí!
     
     if not HOST:
