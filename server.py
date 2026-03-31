@@ -21,7 +21,7 @@ inventario_lock = threading.Lock()
 CMD_LIST = 1; CMD_BOOK = 2; CMD_CONFIRM = 3; CMD_CANCEL = 4
 STATUS_OK = 0; STATUS_ERR = 1; STATUS_NONE = 2
 
-# --- NUEVA FUNCIÓN: AUTO-DESCUBRIMIENTO UDP ---
+# Auto descubrimiento UDP (Para no implementar manualmente la IP)
 def responder_descubrimiento():
     # Creamos un socket UDP
     desc_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

@@ -9,12 +9,12 @@ PORT = 65432
 CMD_LIST = 1; CMD_BOOK = 2; CMD_CONFIRM = 3; CMD_CANCEL = 4
 STATUS_OK = 0; STATUS_ERR = 1; STATUS_NONE = 2
 
-# --- NUEVA FUNCIÓN: AUTO-DESCUBRIMIENTO UDP ---
+# Auto descubrimiento UDP 
 def buscar_servidor_automaticamente():
     print("\nBuscando servidor en la red Wi-Fi...")
     desc_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     
-    # Habilitamos el modo "Grito" (Broadcast)
+    # Habilitamos el modo Broadcast
     desc_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     desc_sock.settimeout(5.0) # Esperamos 5 segundos máximo a que responda
 
@@ -68,8 +68,8 @@ def enviar_comando(sock, cmd, ts, asiento=0, id_res=0):
     return struct.unpack('! B I I', respuesta)
 
 def iniciar_cliente():
-    # HOST = buscar_servidor_automaticamente() # 
-    HOST = '192.168.14.164' # <-- ¡Asegúrate de poner tu IP aquí!
+    # HOST = buscar_servidor_automaticamente() # Descomentar si UDP 
+    HOST = '192.168.14.164' # Ip manualmente, podriamos usar la automatica (puerto 5000 UDP)
     
     if not HOST:
         print("Cerrando programa...")
