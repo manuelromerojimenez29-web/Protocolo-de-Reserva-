@@ -60,4 +60,65 @@ El servidor debe iniciarse siempre antes que los clientes para habilitar el puer
 
 ## 5. Ejemplos de uso
 
-## 6. Capturas y Diagramas
+A continuación, se representan los flujos de interacción temporal entre cliente y servidor, ilustrando cómo el protocolo garantiza el control de estado y la concurrencia.
+
+### 5.1. Ciclo de Vida Nominal (Happy Path)
+
+Este diagrama describe el escenario ideal donde un cliente se conecta, consulta la disponibilidad, bloquea un asiento y confirma la reserva antes de que expire el temporizador.
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente
+    participant S as Servidor
+
+    Note over C,S: 1. Descubrimiento y Conexión
+    C--)S: UDP Broadcast (BUSCANDO_SERVIDOR)
+    S--)C: UDP Respuesta (AQUI_ESTOY)
+    C->>S: TCP SYN / ACK (Conexión Establecida)
+
+    Note over C,S: 2. Operación LIST (Consulta)
+    C->>S: [10B] CMD_LIST (1) | Timestamp | Asiento:0 | ID:0
+    S->>C: [9B] STATUS_OK (0) | Máscara de Disponibilidad | 0
+
+    Note over C,S: 3. Operación BOOK (Reserva)
+    C->>S: [10B] CMD_BOOK (2) | Timestamp | Asiento:1 | ID:0
+    Note right of S: Lock Mutex adquirido\nAsiento 1 -> BLOQUEADO\nGenera ID Reserva\nInicia Timer (60s)
+    S->>C: [9B] STATUS_OK (0) | ID_Reserva | Tiempo:60
+
+    Note over C,S: 4. Operación CONFIRM (Confirmación)
+    C->>S: [10B] CMD_CONFIRM (3) | Timestamp | Asiento:0 | ID_Reserva
+    Note right of S: Cancela Timer\nAsiento 1 -> CONFIRMADO
+    S->>C: [9B] STATUS_OK (0) | ID_Reserva | 0
+
+    Note over C,S: 5. Desconexión
+    C->>S: TCP FIN (Cliente cierra conexión)
+    Note right of S: Libera recursos del hilo
+```
+
+### 5.2 Gestión de Concurrencia y Expiración (Timeout)
+
+Este escenario demuestra la eficacia del sistema cuando dos clientes intentan reservar el mismo recurso, y qué ocurre si un cliente no confirma su reserva en el tiempo establecido.
+
+```mermaid
+sequenceDiagram
+    participant C1 as Cliente A
+    participant C2 as Cliente B
+    participant S as Servidor
+
+    C1->>S: [10B] CMD_BOOK | Asiento:2
+    Note right of S: Mutex Lock()\nAsiento 2 -> BLOQUEADO\nInicia Timer (60s)\nMutex Unlock()
+    S->>C1: [9B] STATUS_OK | ID_Reserva: 8392
+
+    C2->>S: [10B] CMD_BOOK | Asiento:2
+    Note right of S: Mutex Lock()\nAsiento 2 != LIBRE\nMutex Unlock()
+    S->>C2: [9B] STATUS_ERR (1) | CodError: 2 | 0
+    Note left of C2: Cliente B recibe error\n(Asiento ocupado)
+
+    Note over C1,S: Transcurren 60 segundos sin confirmación
+
+    Note right of S: Timer expira\nMutex Lock()\nAsiento 2 -> LIBRE\nMutex Unlock()
+
+    C2->>S: [10B] CMD_BOOK | Asiento:2
+    Note right of S: Mutex Lock()\nAsiento 2 -> BLOQUEADO\nGenera nuevo ID\nMutex Unlock()
+    S->>C2: [9B] STATUS_OK | ID_Reserva: 1145
+```
