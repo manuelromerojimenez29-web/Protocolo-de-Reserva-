@@ -3,10 +3,21 @@
 - diferenciar por fecha ---------
 -control de errores -----------
 -wireshark
-- codificacion de mensajes por bits. Trnasformr mensaje en secuencia de bits (en cliente.py) antes de enviar al servidor ----------
+- codificacion de mensajes por bits. Trnasformr mensaje en secuencia de bits (en cliente) antes de enviar al servidor ----------
+
+*para la presentacion sobre los bits: Hemos implementado manualmente un protocolo de aplicación binario sobre TCP. Cada mensaje se codifica explícitamente como una 
+*secuencia de bytes con campos de tamaño fijo, tanto en las peticiones del cliente como en las respuestas del servidor.
+
+
 -cancelación y liberación -------------
 -identificador reserva ---------
 -ABNF
 -Establecer franja entre horas, solo horario cada media hora 
 - diagrama de estados
+*el servidor es concurrente porque por cada cliente crea un hilo*
 -problema al meter hora 00:00--------
+
+
+REPARTO TRABAJO SEMANA SANTA
+-Diagrama de secuencia
+-Repaso ABNF
