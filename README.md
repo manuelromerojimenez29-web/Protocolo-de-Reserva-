@@ -140,11 +140,6 @@ El servidor sigue un ciclo de vida basado en la gestión de conexiones y procesa
 * Puede volver a esperar nuevas peticiones o cerrar la conexión (**CERRANDO CONEXIÓN**).
 * Finalmente, llega a **FIN** o termina en caso de error.
 
-#### 📊 Diagrama
-
-<p align="center">
-  <img src="servidor.png" width="600"/>
-</p>
 
 ---
 
@@ -160,13 +155,7 @@ El cliente modela la interacción con el usuario y la comunicación con el servi
 * Dependiendo del resultado, puede acceder a un **SUBMENÚ** o volver al menú principal.
 * Puede finalizar en cualquier momento en el estado **FIN**.
 
-#### 📊 Diagrama
 
-<p align="center">
-  <img src="cliente.png" width="600"/>
-</p>
-
----
 
 ### 6.3 Relación con el protocolo
 
