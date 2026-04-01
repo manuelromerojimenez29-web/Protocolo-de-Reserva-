@@ -143,7 +143,7 @@ def iniciar_cliente():
                     print("\n[ERROR] Debes introducir un número de ID válido.")
 
             elif opcion == '5':
-                # Si cambia la fecha, no pasa nada porque ya estamos chateando activamente con el servidor
+                # Si cambia la fecha, no pasa nada 
                 ts_actual = pedir_fecha_hora()
             
             elif opcion == '6':
