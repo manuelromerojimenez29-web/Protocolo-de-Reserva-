@@ -122,3 +122,60 @@ sequenceDiagram
     Note right of S: Mutex Lock()\nAsiento 2 -> BLOQUEADO\nGenera nuevo ID\nMutex Unlock()
     S->>C2: [9B] STATUS_OK | ID_Reserva: 1145
 ```
+## 6. Diagramas de Estados
+
+Para describir formalmente el comportamiento del sistema, se han definido diagramas de estados tanto para el servidor como para el cliente. Estos diagramas representan las distintas fases del sistema y las transiciones en función de los eventos recibidos.
+
+---
+
+### 6.1 Diagrama de estados del servidor
+
+El servidor sigue un ciclo de vida basado en la gestión de conexiones y procesamiento de peticiones:
+
+* Comienza en **INICIO** y pasa a **ESCUCHANDO**, donde espera conexiones.
+* Al recibir una conexión, transita a **ACEPTANDO CONEXIÓN**.
+* Una vez establecida, entra en **ESPERANDO PETICIÓN**.
+* Al recibir un mensaje válido, pasa a **PROCESANDO MENSAJE**.
+* Posteriormente, envía la respuesta en **ENVIANDO RESPUESTA**.
+* Puede volver a esperar nuevas peticiones o cerrar la conexión (**CERRANDO CONEXIÓN**).
+* Finalmente, llega a **FIN** o termina en caso de error.
+
+#### 📊 Diagrama
+
+<p align="center">
+  <img src="servidor.png" width="600"/>
+</p>
+
+---
+
+### 6.2 Diagrama de estados del cliente
+
+El cliente modela la interacción con el usuario y la comunicación con el servidor:
+
+* Parte de **INICIO** y pasa a **CONECTANDO SERVIDOR**.
+* Si la conexión es correcta, entra en **FECHA/HORA**.
+* Posteriormente accede al **MENÚ**, desde donde el usuario puede elegir operaciones.
+* Al seleccionar una opción, pasa a **ENVIANDO PETICIÓN**.
+* Luego entra en **PROCESANDO RESPUESTA**, donde interpreta la respuesta del servidor.
+* Dependiendo del resultado, puede acceder a un **SUBMENÚ** o volver al menú principal.
+* Puede finalizar en cualquier momento en el estado **FIN**.
+
+#### 📊 Diagrama
+
+<p align="center">
+  <img src="cliente.png" width="600"/>
+</p>
+
+---
+
+### 6.3 Relación con el protocolo
+
+Estos diagramas garantizan la coherencia del protocolo definido:
+
+* Cada comando (`LIST`, `BOOK`, `CONFIRM`, `CANCEL`) corresponde a una transición en los estados.
+* El servidor mantiene el control del estado global del sistema.
+* El cliente gestiona la interacción y decide el flujo de ejecución.
+* Se contemplan situaciones de error, desconexión y estados inválidos.
+
+De esta forma, se asegura un comportamiento robusto y consistente del sistema bajo condiciones de concurrencia.
+
