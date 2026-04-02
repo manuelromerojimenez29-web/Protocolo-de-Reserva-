@@ -146,7 +146,7 @@ El servidor sigue un ciclo de vida basado en la gestión de conexiones y procesa
 
 ### 6.2 Diagrama de estados del cliente
 
-![Diagrama cliente](estadocliente.png)
+![Diagrama cliente](estadociente.png)
 El cliente modela la interacción con el usuario y la comunicación con el servidor:
 
 * Parte de **INICIO** y pasa a **CONECTANDO SERVIDOR**.
