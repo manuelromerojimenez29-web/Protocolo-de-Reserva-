@@ -130,7 +130,7 @@ Para describir formalmente el comportamiento del sistema, se han definido diagra
 
 ### 6.1 Diagrama de estados del servidor
 
-![Diagrama servidor](estadoservidor.png)
+![Diagrama servidor](estado_servidor.png)
 El servidor sigue un ciclo de vida basado en la gestión de conexiones y procesamiento de peticiones:
 
 * Comienza en **INICIO** y pasa a **ESCUCHANDO**, donde espera conexiones.
@@ -146,7 +146,7 @@ El servidor sigue un ciclo de vida basado en la gestión de conexiones y procesa
 
 ### 6.2 Diagrama de estados del cliente
 
-![Diagrama cliente](estadociente.png)
+![Diagrama cliente](estado_cliente.png)
 El cliente modela la interacción con el usuario y la comunicación con el servidor:
 
 * Parte de **INICIO** y pasa a **CONECTANDO SERVIDOR**.
