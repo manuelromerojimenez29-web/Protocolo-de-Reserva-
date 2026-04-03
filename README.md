@@ -170,3 +170,6 @@ Estos diagramas garantizan la coherencia del protocolo definido:
 
 De esta forma, se asegura un comportamiento robusto y consistente del sistema bajo condiciones de concurrencia.
 
+## 7. Captura de tráfico con Wireshark
+
+Se ha realizado una captura de tráfico de red utilizando Wireshark para analizar la comunicación entre cliente y servidor.
