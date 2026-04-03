@@ -16,10 +16,10 @@ def buscar_servidor_automaticamente():
     
     # Habilitamos el modo Broadcast
     desc_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    desc_sock.settimeout(5.0) # Esperamos 5 segundos máximo a que responda
+    desc_sock.settimeout(5.0) # Esperamos 5 segundos máximo
 
     try:
-        # <broadcast> es un atajo de Python para 255.255.255.255
+        #atajo de Python para 255.255.255.255
         desc_sock.sendto(b"BUSCANDO_SERVIDOR", ('<broadcast>', 50000))
         
         # Escuchamos la respuesta del servidor
@@ -56,12 +56,12 @@ def enviar_comando(sock, cmd, ts, asiento=0, id_res=0):
     paquete = struct.pack('! B I B I', cmd, ts, asiento, id_res)
     sock.sendall(paquete)
     
-    # Búfer para asegurar que leemos exactamente 9 bytes
+    # Búfer leemos 9 bytes
     respuesta = b''
     while len(respuesta) < 9:
         chunk = sock.recv(9 - len(respuesta))
         if not chunk:
-            # Si se corta la conexión, devolvemos un código de error interno para no crashear
+            # Si se corta la conexión, devolvemos un código de error 
             return (STATUS_ERR, 99, 0) 
         respuesta += chunk
         
@@ -78,7 +78,7 @@ def iniciar_cliente():
     # 1. PRIMERO PEDIMOS LOS DATOS (Para no hacer esperar a la red)
     ts_actual = pedir_fecha_hora()
 
-    # 2. LUEGO NOS CONECTAMOS AL SERVIDOR
+    # 2.CONECTAMOS AL SERVIDOR
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((HOST, PORT))
@@ -87,7 +87,7 @@ def iniciar_cliente():
         print("Error: Servidor no disponible.")
         sys.exit()
 
-    # 3. ENTRAMOS AL MENÚ DIRECTAMENTE
+    # 3. ENTRAMOS AL MENÚ 
     try:
         while True:
             mostrar_submenu = False 
@@ -143,7 +143,7 @@ def iniciar_cliente():
                     print("\n[ERROR] Debes introducir un número de ID válido.")
 
             elif opcion == '5':
-                # Si cambia la fecha, no pasa nada 
+                # Si cambia la fecha
                 ts_actual = pedir_fecha_hora()
             
             elif opcion == '6':
