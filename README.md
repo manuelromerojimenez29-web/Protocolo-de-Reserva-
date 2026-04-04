@@ -193,5 +193,5 @@ El archivo `.pcapng` se encuentra disponible en este repositorio para su anális
 
 ## Archivos de captura
 
-- [Captura del servidor](./servidorprueba.pcapng)
-- [Captura del cliente](./clienteprueba.pcapng)
+- [Captura del servidor](./Capturas_Wireshark/servidorprueba.pcapng)
+- [Captura del cliente](./Capturas_Wireshark/clienteprueba.pcapng)
