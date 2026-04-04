@@ -172,4 +172,26 @@ De esta forma, se asegura un comportamiento robusto y consistente del sistema ba
 
 ## 7. Captura de tráfico con Wireshark
 
-Se ha realizado una captura de tráfico de red utilizando Wireshark para analizar la comunicación entre cliente y servidor.
+En este repositorio se incluye una captura de tráfico de red en formato .pcap, obtenida mediante la herramienta Wireshark, con el objetivo de analizar la comunicación entre cliente y servidor y el funcionamiento del protocolo implementado.
+
+Escenario de la captura
+Cliente: 192.168.14.132
+Servidor: 192.168.14.164
+Puerto del servicio: 65432
+
+En la captura se pueden observar:
+
+El establecimiento de la conexión TCP mediante el three-way handshake (SYN, SYN-ACK, ACK)
+El intercambio de mensajes del protocolo de aplicación entre cliente y servidor
+La correcta finalización de la conexión mediante paquetes FIN/ACK
+
+Los mensajes intercambiados siguen la estructura definida en el protocolo, con peticiones de 10 bytes desde el cliente y respuestas de 9 bytes desde el servidor.
+
+### Archivo de captura
+
+El archivo `.pcapng` se encuentra disponible en este repositorio para su análisis.
+
+## Archivos de captura
+
+- [Captura del servidor](./servidorprueba.pcapng)
+- [Captura del cliente](./clienteprueba.pcapng)
