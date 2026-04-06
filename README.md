@@ -175,6 +175,7 @@ De esta forma, se asegura un comportamiento robusto y consistente del sistema ba
 En este repositorio se incluye una captura de tráfico de red en formato .pcap, obtenida mediante la herramienta Wireshark, con el objetivo de analizar la comunicación entre cliente y servidor y el funcionamiento del protocolo implementado.
 
 Escenario de la captura
+
 Cliente: 192.168.14.132
 
 Servidor: 192.168.14.164
