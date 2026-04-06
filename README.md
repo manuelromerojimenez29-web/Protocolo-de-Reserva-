@@ -176,7 +176,9 @@ En este repositorio se incluye una captura de tráfico de red en formato .pcap, 
 
 Escenario de la captura
 Cliente: 192.168.14.132
+
 Servidor: 192.168.14.164
+
 Puerto del servicio: 65432
 
 En la captura se pueden observar:
