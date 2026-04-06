@@ -185,7 +185,9 @@ Puerto del servicio: 65432
 En la captura se pueden observar:
 
 El establecimiento de la conexión TCP mediante el three-way handshake (SYN, SYN-ACK, ACK)
+
 El intercambio de mensajes del protocolo de aplicación entre cliente y servidor
+
 La correcta finalización de la conexión mediante paquetes FIN/ACK
 
 Los mensajes intercambiados siguen la estructura definida en el protocolo, con peticiones de 10 bytes desde el cliente y respuestas de 9 bytes desde el servidor.
