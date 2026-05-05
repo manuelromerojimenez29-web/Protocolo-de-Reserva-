@@ -1,19 +1,10 @@
-
+import java.rmi.ConnectException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
-
-
-
-/**
- *
- * @author MSI
- */
-
 
 public class ClienteRMI {
 
@@ -24,10 +15,7 @@ public class ClienteRMI {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            String host = "localhost";
-
-            // Si el servidor está en otro ordenador, cambia localhost por su IP:
-            // String host = "192.168.158.164";
+            String host = "192.168.158.164";
 
             Registry registro = LocateRegistry.getRegistry(host, 1099);
             ServicioReservas servicio = (ServicioReservas) registro.lookup("ServicioReservas");
@@ -49,29 +37,34 @@ public class ClienteRMI {
                 String opcion = scanner.nextLine();
 
                 if (opcion.equals("1")) {
-                    RespuestaReserva respuesta = servicio.listarDisponibilidad(timestampSesion);
+                    try {
+                        RespuestaReserva respuesta = servicio.listarDisponibilidad(timestampSesion);
 
-                    if (respuesta.getEstado() == STATUS_NONE) {
-                        System.out.println("\n[AVISO] Lo sentimos, no hay asientos disponibles para esta sesión.");
-                    } else if (respuesta.getEstado() == STATUS_OK) {
-                        int mascara = respuesta.getParametro1();
+                        if (respuesta.getEstado() == STATUS_NONE) {
+                            System.out.println("\n[AVISO] Lo sentimos, no hay asientos disponibles para esta sesión.");
+                        } else if (respuesta.getEstado() == STATUS_OK) {
+                            int mascara = respuesta.getParametro1();
 
-                        System.out.print("\n[OK] Asientos disponibles: [");
+                            System.out.print("\n[OK] Asientos disponibles: [");
 
-                        boolean primero = true;
-                        for (int i = 1; i <= 4; i++) {
-                            if ((mascara & (1 << i)) != 0) {
-                                if (!primero) {
-                                    System.out.print(", ");
+                            boolean primero = true;
+                            for (int i = 1; i <= 4; i++) {
+                                if ((mascara & (1 << i)) != 0) {
+                                    if (!primero) {
+                                        System.out.print(", ");
+                                    }
+                                    System.out.print(i);
+                                    primero = false;
                                 }
-                                System.out.print(i);
-                                primero = false;
                             }
+
+                            System.out.println("]");
+                        } else {
+                            System.out.println("\n[ERROR] " + respuesta.getMensaje());
                         }
 
-                        System.out.println("]");
-                    } else {
-                        System.out.println("\n[ERROR] " + respuesta.getMensaje());
+                    } catch (ConnectException e){
+                        System.out.println("\n[ERROR DE CONEXIÓN] No se pudo contactar con el servidor.");
                     }
 
                 } else if (opcion.equals("2")) {
@@ -96,6 +89,8 @@ public class ClienteRMI {
 
                     } catch (NumberFormatException e) {
                         System.out.println("\n[ERROR] Debes introducir un número válido.");
+                    } catch (ConnectException e){
+                        System.out.println("\n[ERROR DE CONEXIÓN] No se pudo contactar con el servidor.");
                     }
 
                 } else if (opcion.equals("3")) {
@@ -117,6 +112,8 @@ public class ClienteRMI {
 
                     } catch (NumberFormatException e) {
                         System.out.println("\n[ERROR] Debes introducir un número de ID válido.");
+                    } catch (ConnectException e){
+                        System.out.println("\n[ERROR DE CONEXIÓN] No se pudo contactar con el servidor.");
                     }
 
                 } else if (opcion.equals("4")) {
@@ -134,6 +131,8 @@ public class ClienteRMI {
 
                     } catch (NumberFormatException e) {
                         System.out.println("\n[ERROR] Debes introducir un número de ID válido.");
+                    } catch (ConnectException e){
+                        System.out.println("\n[ERROR DE CONEXIÓN] No se pudo contactar con el servidor.");
                     }
 
                 } else if (opcion.equals("5")) {
@@ -144,10 +143,9 @@ public class ClienteRMI {
 
                 } else {
                     System.out.println("\n[ERROR] Opción no válida.");
+                    continue;
                 }
             }
-
-            System.out.println("Cerrando cliente...");
 
         } catch (Exception e) {
             System.out.println("Error en el cliente RMI:");

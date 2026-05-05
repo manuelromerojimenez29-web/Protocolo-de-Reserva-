@@ -13,6 +13,9 @@ public class ServidorRMI {
 
     public static void main(String[] args) {
         try {
+            
+            System.setProperty("java.rmi.server.hostname", "192.168.158.164");
+            
             ServicioReservas servicio = new ServicioReservasImpl();
 
             Registry registro = LocateRegistry.createRegistry(1099);
