@@ -69,7 +69,8 @@ def enviar_comando(sock, cmd, ts, asiento=0, id_res=0):
 
 def iniciar_cliente():
     # HOST = buscar_servidor_automaticamente() # Descomentar si UDP 
-    HOST = '192.168.14.164' # Ip manualmente, podriamos usar la automatica (puerto 5000 UDP)
+    # HOST = '192.168.14.164' # Ip manualmente, podriamos usar la automatica (puerto 5000 UDP)
+    HOST = '192.168.56.1'
     
     if not HOST:
         print("Cerrando programa...")
